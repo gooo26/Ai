@@ -1,1 +1,610 @@
-n
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>JyotishAI | Premium Janam Kundali & Marriage Match</title>
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    :root {
+      --bg-dark: #0b0c1a;
+      --card-dark: rgba(20, 22, 45, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --neon-blue: #3b82f6;
+      --neon-purple: #a855f7;
+      --neon-orange: #f97316;
+      --text-light: #f1f5f9;
+      --text-dim: #cbd5e6;
+      --shadow-glow: 0 8px 32px rgba(59, 130, 246, 0.2);
+    }
+
+    body.light {
+      --bg-dark: #f4f7fc;
+      --card-dark: rgba(255, 255, 255, 0.8);
+      --glass-border: rgba(0, 0, 0, 0.1);
+      --text-light: #0f172a;
+      --text-dim: #334155;
+      --shadow-glow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    body {
+      background: radial-gradient(circle at 10% 30%, #0a0c1e, #010105);
+      color: var(--text-light);
+      transition: all 0.3s ease;
+      padding: 1.5rem;
+    }
+
+    body.light {
+      background: radial-gradient(circle at 10% 30%, #eef2ff, #e0e7ff);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* glassmorphic card */
+    .glass-card {
+      background: var(--card-dark);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 2rem;
+      padding: 1.8rem;
+      box-shadow: var(--shadow-glow);
+      transition: transform 0.2s ease, box-shadow 0.2s;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 35px -12px rgba(59, 130, 246, 0.4);
+    }
+
+    /* header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .logo h1 {
+      font-size: 1.9rem;
+      background: linear-gradient(135deg, #a855f7, #3b82f6, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .mode-switch, .theme-toggle, .lang-switch {
+      background: rgba(255,255,255,0.08);
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      color: white;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    body.light .mode-switch, body.light .theme-toggle, body.light .lang-switch {
+      background: rgba(0,0,0,0.05);
+      color: #0f172a;
+    }
+
+    .active-mode {
+      background: linear-gradient(135deg, #3b82f6, #a855f7);
+      box-shadow: 0 0 8px #a855f7;
+    }
+
+    /* form grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin: 1.5rem 0;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+    }
+
+    input, select {
+      background: rgba(15, 25, 45, 0.6);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.8rem 1rem;
+      border-radius: 1.2rem;
+      color: white;
+      font-size: 0.9rem;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    body.light input, body.light select {
+      background: white;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+    }
+
+    input:focus {
+      border-color: #a855f7;
+      box-shadow: 0 0 0 2px rgba(168,85,247,0.4);
+    }
+
+    button.primary {
+      background: linear-gradient(90deg, #3b82f6, #a855f7);
+      border: none;
+      padding: 0.9rem 1.8rem;
+      border-radius: 2rem;
+      font-weight: bold;
+      color: white;
+      width: 100%;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 0.8rem;
+    }
+
+    button.primary:hover {
+      transform: scale(0.98);
+      box-shadow: 0 0 15px #a855f7;
+    }
+
+    .result-section {
+      margin-top: 2rem;
+      display: none;
+      animation: fadeSlideUp 0.5s ease;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .kundali-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 1.5rem;
+      padding: 1rem;
+    }
+
+    .house {
+      background: rgba(255,255,255,0.05);
+      border-radius: 1rem;
+      padding: 0.7rem;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .badge {
+      background: linear-gradient(135deg, #f97316, #a855f7);
+      border-radius: 2rem;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.75rem;
+    }
+
+    .speech-bar {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      padding: 0.5rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    body.light th, body.light td {
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 680px) {
+      body { padding: 1rem; }
+      .glass-card { padding: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo"><h1><i class="fas fa-moon-stars"></i> JyotishAI</h1></div>
+    <div class="controls">
+      <button id="modeToggleBtn" class="mode-switch"><i class="fas fa-arrows-spin"></i> Match Mode</button>
+      <button id="themeToggleBtn" class="theme-toggle"><i class="fas fa-sun"></i> Light</button>
+      <select id="langSelect" class="lang-switch"></select>
+    </div>
+  </div>
+
+  <!-- Single Kundali Form -->
+  <div id="singleForm" class="glass-card">
+    <h3><i class="fas fa-user-astronaut"></i> Single Janam Kundali</h3>
+    <div class="form-grid">
+      <div class="input-group"><label>Full Name</label><input type="text" id="sName" placeholder="e.g. Aarav Sharma"></div>
+      <div class="input-group"><label>Date of Birth</label><input type="date" id="sDob"></div>
+      <div class="input-group"><label>Time (optional)</label><input type="time" id="sTime"><label style="margin-top:5px"><input type="checkbox" id="sUnknownTime"> Unknown Time (12:00 PM)</label></div>
+      <div class="input-group"><label>Place of Birth</label><input type="text" id="sPlace" placeholder="City, Country"></div>
+    </div>
+    <button class="primary" id="generateSingleBtn"><i class="fas fa-chart-line"></i> Generate Kundali</button>
+  </div>
+
+  <!-- Match Kundali Form (hidden by default) -->
+  <div id="matchForm" class="glass-card" style="display:none;">
+    <h3><i class="fas fa-heart"></i> Kundali Matching (Boy ♂ + Girl ♀)</h3>
+    <div class="form-grid">
+      <div class="input-group"><label>Boy Name</label><input type="text" id="bName" placeholder="Boy Name"></div>
+      <div class="input-group"><label>Boy DOB</label><input type="date" id="bDob"></div>
+      <div class="input-group"><label>Time</label><input type="time" id="bTime"><input type="checkbox" id="bUnknown"> Unknown</div>
+      <div class="input-group"><label>Place</label><input type="text" id="bPlace"></div>
+    </div>
+    <div class="form-grid">
+      <div class="input-group"><label>Girl Name</label><input type="text" id="gName" placeholder="Girl Name"></div>
+      <div class="input-group"><label>Girl DOB</label><input type="date" id="gDob"></div>
+      <div class="input-group"><label>Time</label><input type="time" id="gTime"><input type="checkbox" id="gUnknown"> Unknown</div>
+      <div class="input-group"><label>Place</label><input type="text" id="gPlace"></div>
+    </div>
+    <button class="primary" id="generateMatchBtn"><i class="fas fa-hand-holding-heart"></i> Match & Predict</button>
+  </div>
+
+  <!-- OUTPUT DYNAMIC AREA -->
+  <div id="resultArea" class="result-section glass-card"></div>
+</div>
+
+<script>
+  // ======================== MULTI LANGUAGE DICT ====================
+  const translations = {
+    en: { title:"Astro Report", rashi:"Rashi", nakshatra:"Nakshatra", manglik:"Manglik", matchScore:"Match Score", partnerLetters:"Future Partner Name Starts With", marriageTiming:"Marriage Timing", muhurat:"Muhurat Dates", download:"Download PDF", speech:"Speak" },
+    hi: { title:"जन्म कुंडली", rashi:"राशि", nakshatra:"नक्षत्र", manglik:"मंगलिक", matchScore:"गुण मिलान", partnerLetters:"भावी जीवनसाथी के नाम अक्षर", marriageTiming:"विवाह समय", muhurat:"शुभ मुहूर्त", download:"पीडीएफ डाउनलोड", speech:"बोलें" },
+    gu: { title:"જનમ કુંડળી", rashi:"રાશિ", nakshatra:"નક્ષત્ર", manglik:"મંગળિક", matchScore:"ગુણ મેળ", partnerLetters:"ભાવિ જીવનસાથીના નામના પ્રથમ અક્ષર", marriageTiming:"લગ્ન સમય", muhurat:"શુભ મુહૂર્ત", download:"PDF ડાઉનલોડ", speech:"બોલો" },
+    ta: { title:"ஜாதகம்", rashi:"ராசி", nakshatra:"நட்சத்திரம்", manglik:"மாங்கல்யம்", matchScore:"பொருத்தம்", partnerLetters:"எதிர்கால துணையின் பெயர் எழுத்து", marriageTiming:"திருமண காலம்", muhurat:"முகூர்த்த தேதிகள்", download:"PDF பதிவிறக்க", speech:"பேசு" }
+  };
+  let currentLang = "en";
+  function t(key) { return translations[currentLang]?.[key] || key; }
+
+  // Language switcher
+  const langSelect = document.getElementById("langSelect");
+  for(let l in translations) langSelect.add(new Option(l.toUpperCase(), l));
+  langSelect.value="en";
+  langSelect.onchange = (e) => { currentLang = e.target.value; if(window.currentResultHtml) document.getElementById("resultArea").innerHTML = window.currentResultHtml; };
+
+  // Theme Toggle
+  const themeBtn = document.getElementById("themeToggleBtn");
+  themeBtn.onclick = () => document.body.classList.toggle("light");
+  
+  // Mode toggle: single vs match
+  let matchMode = false;
+  const modeBtn = document.getElementById("modeToggleBtn");
+  const singleDiv = document.getElementById("singleForm");
+  const matchDiv = document.getElementById("matchForm");
+  modeBtn.onclick = () => {
+    matchMode = !matchMode;
+    singleDiv.style.display = matchMode ? "none" : "block";
+    matchDiv.style.display = matchMode ? "block" : "none";
+    modeBtn.innerHTML = matchMode ? '<i class="fas fa-user"></i> Single Mode' : '<i class="fas fa-arrows-spin"></i> Match Mode';
+    document.getElementById("resultArea").style.display = "none";
+  };
+
+  // Helper: parse date/time to Julian Day approx
+  function toJulian(y,m,d, hour,min) {
+    if(m<3){ y--; m+=12; }
+    let A = Math.floor(y/100);
+    let B = 2 - A + Math.floor(A/4);
+    let JD = Math.floor(365.25*(y+4716)) + Math.floor(30.6001*(m+1)) + d + B - 1524.5;
+    return JD + (hour + min/60)/24;
+  }
+
+  // planetary longitudes - simplified but logical based on JD (mean longitudes)
+  function getPlanetLongitudes(jd) {
+    const T = (jd - 2451545.0)/36525.0;
+    const planets = {
+      Sun: 280.46646 + 36000.76983*T, 
+      Moon: 218.3165 + 481267.8813*T, 
+      Mars: 355.433 + 19140.2993*T,
+      Mercury: 168.6562 + 40009.8755*T, 
+      Jupiter: 34.351 + 109256.560*T, 
+      Venus: 212.603 + 58517.803*T,
+      Saturn: 50.077 + 43996.083*T
+    };
+    for(let p in planets) planets[p] = ((planets[p] % 360) + 360) % 360;
+    return planets;
+  }
+
+  function getRashi(longitude) { return Math.floor(longitude / 30); } // 0-11
+  
+  const nakshatraNames = ["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishtha","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"];
+  
+  function getNakshatra(longitude) { 
+    let idx = Math.floor(longitude * 27 / 360); 
+    return {index: idx, name: nakshatraNames[idx], letters: getNakshatraLetters(idx) }; 
+  }
+  
+  function getNakshatraLetters(idx) { 
+    const mapping = ["A","I","U","E","O","KA","KI","KU","KHA","GA","GI","GU","GE","GO","SA","SI","SU","SE","SO","TA","TI","TU","TE","TO","PA","PI","PU","PE"]; 
+    return mapping[idx] || "A"; 
+  }
+
+  function calcHouses(lagnaDeg) { 
+    let houses = []; 
+    for(let i=0;i<12;i++) houses.push((lagnaDeg + i*30)%360); 
+    return houses; 
+  }
+
+  function getLagna(jd, placeLat=23.0) { 
+    const sunLong = getPlanetLongitudes(jd).Sun; 
+    return (sunLong + 180) % 360; 
+  } // approx asc
+
+  function manglikCheck(marsHouse) { 
+    return [0,3,6,7,11].includes(marsHouse); 
+  } // houses 1,4,7,8,12 (0-indexed)
+
+  function ashtaKootScore(boyPlanets, girlPlanets) {
+    // More realistic calculation based on Moon nakshatra difference
+    const moonDiff = Math.abs((boyPlanets.Moon - girlPlanets.Moon + 360) % 360);
+    const nakshatraDiff = Math.floor(moonDiff / 13.333);
+    let score = 36 - Math.floor(nakshatraDiff * 1.5);
+    score = Math.min(36, Math.max(18, score));
+    return score;
+  }
+
+  function futurePartnerLetters(seventhHouseRashiIdx, nakshatraIdx) { 
+    let letters = ["A","K","C","M","T","R","S","Y","L","P","D","N","B","G","V","H"]; 
+    let idx = (seventhHouseRashiIdx + nakshatraIdx) % letters.length;
+    return letters[idx] + ", " + letters[(idx+2)%letters.length] + ", " + letters[(idx+4)%letters.length]; 
+  }
+
+  function marriageTimingPred(jupiterStrength, venusStrength) { 
+    let baseAge = 22;
+    let adjustment = Math.floor((jupiterStrength + venusStrength) / 2);
+    let age = baseAge + adjustment;
+    return `${age} - ${age+3} years`; 
+  }
+
+  const muhuratDates = ["2026-04-15", "2026-05-02", "2026-06-18", "2026-07-09", "2026-08-22", "2026-09-15", "2026-10-28"];
+  function getMuhurat() { return muhuratDates; }
+
+  // main calculation for single or match
+  function processSingle(name, dob, timeStr, unknown, place) {
+    let dt = new Date(dob); 
+    if(isNaN(dt.getTime())) throw "Invalid DOB";
+    let hour=12, minute=0;
+    if(!unknown && timeStr){ 
+      let [h,m]=timeStr.split(":"); 
+      hour=parseInt(h); 
+      minute=parseInt(m); 
+    }
+    let jd = toJulian(dt.getFullYear(), dt.getMonth()+1, dt.getDate(), hour, minute);
+    let planets = getPlanetLongitudes(jd);
+    let sunRashi = getRashi(planets.Sun);
+    let nakshatraObj = getNakshatra(planets.Moon);
+    let lagnaDeg = getLagna(jd);
+    let lagnaRashi = getRashi(lagnaDeg);
+    let houses = calcHouses(lagnaDeg);
+    let marsHouse = getRashi(planets.Mars);
+    let isManglik = manglikCheck(marsHouse);
+    let seventhHouse = houses[6];
+    let seventhRashi = getRashi(seventhHouse);
+    let futureLetters = futurePartnerLetters(seventhRashi, nakshatraObj.index);
+    let jupiterStrength = Math.floor((planets.Jupiter % 360) / 36);
+    let venusStrength = Math.floor((planets.Venus % 360) / 36);
+    let marriageAge = marriageTimingPred(jupiterStrength, venusStrength);
+    let muhuratList = getMuhurat();
+    return { 
+      name, 
+      rashi: sunRashi+1, 
+      nakshatra: nakshatraObj.name, 
+      manglik: isManglik, 
+      planets, 
+      houses, 
+      lagnaRashi: lagnaRashi+1, 
+      futureLetters, 
+      marriageAge, 
+      muhuratList, 
+      dobRaw: dob,
+      seventhRashi: seventhRashi+1
+    };
+  }
+
+  function processMatch(boy, girl) {
+    let b = processSingle(boy.name, boy.dob, boy.time, boy.unknown, boy.place);
+    let g = processSingle(girl.name, girl.dob, girl.time, girl.unknown, girl.place);
+    let score = ashtaKootScore(b.planets, g.planets);
+    let compatibility = score>27?"High ⭐⭐⭐": score>21?"Medium ⭐⭐":"Low ⭐";
+    let boyMang = b.manglik, girlMang = g.manglik;
+    let mangVerdict = "";
+    if(!boyMang && !girlMang) mangVerdict = "✅ Excellent - No Manglik Dosha";
+    else if(boyMang && girlMang) mangVerdict = "⚠️ Both Manglik - Compatible with remedies";
+    else mangVerdict = "⚠️ Manglik mismatch - Consult astrologer for remedies";
+    let boyFuture = b.futureLetters, girlFuture = g.futureLetters;
+    let marriageAgeAvg = `Boy: ${b.marriageAge}, Girl: ${g.marriageAge}`;
+    return { boy: b, girl: g, matchScore: score, compatibility, mangVerdict, boyMang, girlMang, boyFuture, girlFuture, marriageAgeAvg, muhurat: b.muhuratList };
+  }
+
+  // UI Rendering
+  function renderResult(html) { 
+    let area=document.getElementById("resultArea"); 
+    area.style.display="block"; 
+    area.innerHTML=html; 
+    window.currentResultHtml=html; 
+    attachSpeech(); 
+  }
+
+  function attachSpeech() {
+    const speakBtn = document.getElementById("speakBtn");
+    if(speakBtn){
+      speakBtn.onclick = () => {
+        let text = document.getElementById("speechText")?.innerText || "Kundali report ready";
+        let rateControl = document.getElementById("voiceRate");
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = currentLang==='hi'?'hi-IN':currentLang==='ta'?'ta-IN':currentLang==='gu'?'gu-IN':'en-US';
+        if(rateControl) utterance.rate = parseFloat(rateControl.value);
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+      };
+    }
+  }
+
+  document.getElementById("generateSingleBtn").onclick = () => {
+    try{
+      let name=document.getElementById("sName").value.trim()||"Native";
+      let dob=document.getElementById("sDob").value;
+      if(!dob) throw "Please enter Date of Birth";
+      let time=document.getElementById("sTime").value;
+      let unknown=document.getElementById("sUnknownTime").checked;
+      let place=document.getElementById("sPlace").value||"Unknown";
+      let data=processSingle(name,dob,time,unknown,place);
+      let planetsTable = Object.entries(data.planets).map(([p,deg])=>`<tr><td><strong>${p}</strong></td><td>${deg.toFixed(1)}°</td><td>Rashi ${Math.floor(deg/30)+1}</td></tr>`).join("");
+      
+      renderResult(`
+        <div><i class="fas fa-chart-pie"></i> <strong>${t('title')}: ${data.name}</strong> <span class="badge">${data.dobRaw}</span></div>
+        <div class="flex-between" style="margin: 1rem 0;">
+          <div><strong>${t('rashi')}:</strong> ♈ ${data.rashi} &nbsp;|&nbsp; <strong>Lagna:</strong> ♈ ${data.lagnaRashi}</div>
+          <div><strong>${t('nakshatra')}:</strong> 🌙 ${data.nakshatra}</div>
+          <div><strong>${t('manglik')}:</strong> ${data.manglik?"⚠️ Yes (Manglik Dosha)":"✅ No"}</div>
+        </div>
+        
+        <h4><i class="fas fa-chart-simple"></i> North Indian Kundali (Houses)</h4>
+        <div class="kundali-grid" style="margin:1rem 0">
+          ${[0,1,2,3,4,5,6,7,8,9,10,11].map(i => {
+            const signs = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+            return `<div class="house"><strong>H${i+1}</strong><br/>${signs[getRashi(data.houses[i])]}</div>`;
+          }).join("")}
+        </div>
+        
+        <h4><i class="fas fa-planet-ringed"></i> Planet Positions</h4>
+        <table>${planetsTable}</table>
+        
+        <div id="speechText" style="display:none">${data.name} born on ${data.dobRaw}. Rashi ${data.rashi}. Nakshatra ${data.nakshatra}. Manglik ${data.manglik?"Yes":"No"}. 7th house lord indicates future partner name starts with ${data.futureLetters}. Likely marriage age ${data.marriageAge}. Auspicious marriage dates include ${data.muhuratList.slice(0,3).join(", ")}.</div>
+        
+        <div class="speech-bar">
+          <button id="speakBtn" class="primary" style="width:auto"><i class="fas fa-volume-up"></i> ${t('speech')}</button>
+          <select id="voiceRate" style="padding: 0.5rem; border-radius: 2rem;">
+            <option value="0.8">🐢 Slow</option>
+            <option value="1" selected>⚡ Normal</option>
+            <option value="1.3">🚀 Fast</option>
+          </select>
+        </div>
+        
+        <hr style="margin: 1.5rem 0; opacity:0.3;"/>
+        
+        <h3><i class="fas fa-heart"></i> 🔮 ${t('partnerLetters')}: <span style="background: linear-gradient(135deg, #f97316, #a855f7); padding: 0.3rem 1rem; border-radius: 2rem;">${data.futureLetters}</span></h3>
+        
+        <h3><i class="fas fa-calendar-alt"></i> ${t('marriageTiming')}: ${data.marriageAge}</h3>
+        
+        <h3><i class="fas fa-star-of-life"></i> ${t('muhurat')}: ${data.muhuratList.slice(0,5).join(", ")}</h3>
+        
+        <button onclick="window.print()" class="primary" style="margin-top: 1rem;"><i class="fas fa-download"></i> ${t('download')}</button>
+      `);
+    } catch(e){ alert(e.message); }
+  };
+
+  document.getElementById("generateMatchBtn").onclick = () => {
+    try{
+      let b = { 
+        name:document.getElementById("bName").value.trim()||"Boy", 
+        dob:document.getElementById("bDob").value, 
+        time:document.getElementById("bTime").value, 
+        unknown:document.getElementById("bUnknown").checked, 
+        place:document.getElementById("bPlace").value.trim()||"Earth" 
+      };
+      let g = { 
+        name:document.getElementById("gName").value.trim()||"Girl", 
+        dob:document.getElementById("gDob").value, 
+        time:document.getElementById("gTime").value, 
+        unknown:document.getElementById("gUnknown").checked, 
+        place:document.getElementById("gPlace").value.trim()||"Earth" 
+      };
+      if(!b.dob || !g.dob) throw "Please enter both birth dates";
+      let res = processMatch(b,g);
+      
+      renderResult(`
+        <div><i class="fas fa-heartbeat"></i> <strong>Kundali Milan: ${res.boy.name} ♂ & ${res.girl.name} ♀</strong> <span class="badge">AshtaKoot: ${res.matchScore}/36 (${res.compatibility})</span></div>
+        
+        <div class="flex-between" style="margin: 1rem 0; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 1.5rem;">
+          <div><strong>${res.boy.name}</strong><br/>Rashi: ${res.boy.rashi}<br/>Nakshatra: ${res.boy.nakshatra}<br/>Manglik: ${res.boyMang?"Yes ⚠️":"No ✅"}</div>
+          <div><strong>${res.girl.name}</strong><br/>Rashi: ${res.girl.rashi}<br/>Nakshatra: ${res.girl.nakshatra}<br/>Manglik: ${res.girlMang?"Yes ⚠️":"No ✅"}</div>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(168,85,247,0.2)); padding: 1rem; border-radius: 1.5rem; margin: 1rem 0;">
+          <strong><i class="fas fa-gavel"></i> Manglik Verdict:</strong> ${res.mangVerdict}<br/>
+          <strong><i class="fas fa-handshake"></i> Match Score:</strong> ${res.matchScore}/36 - ${res.compatibility}
+        </div>
+        
+        <div class="flex-between">
+          <div><i class="fas fa-user-friends"></i> 🔮 ${res.boy.name}'s partner letters: <strong>${res.boyFuture}</strong></div>
+          <div><i class="fas fa-user-friends"></i> 🔮 ${res.girl.name}'s partner letters: <strong>${res.girlFuture}</strong></div>
+        </div>
+        
+        <div style="margin: 1rem 0;"><i class="fas fa-chart-line"></i> ${t('marriageTiming')}: ${res.marriageAgeAvg}</div>
+        <div><i class="fas fa-calendar-check"></i> ${t('muhurat')}: ${res.muhurat.slice(0,4).join(", ")}</div>
+        
+        <div id="speechText" style="display:none">Match between ${res.boy.name} and ${res.girl.name}. Total score ${res.matchScore} out of 36, compatibility ${res.compatibility}. Boy manglik ${res.boyMang}, girl manglik ${res.girlMang}. ${res.mangVerdict}. Future partner name letters for boy ${res.boyFuture} and for girl ${res.girlFuture}. Marriage timing ${res.marriageAgeAvg}. Auspicious dates ${res.muhurat.slice(0,3).join(", ")}.</div>
+        
+        <div class="speech-bar">
+          <button id="speakBtn" class="primary" style="width:auto"><i class="fas fa-volume-up"></i> ${t('speech')}</button>
+          <select id="voiceRate" style="padding: 0.5rem; border-radius: 2rem;">
+            <option value="0.8">🐢 Slow</option>
+            <option value="1" selected>⚡ Normal</option>
+            <option value="1.3">🚀 Fast</option>
+          </select>
+        </div>
+        
+        <button onclick="window.print()" class="primary" style="margin-top: 1rem;"><i class="fas fa-print"></i> ${t('download')}</button>
+      `);
+    } catch(e){ alert(e.message); }
+  };
+  
+  // Load saved theme
+  (function loadDefaults(){
+    if(localStorage.getItem("theme")==="light") document.body.classList.add("light");
+    themeBtn.onclick = () => { 
+      document.body.classList.toggle("light"); 
+      localStorage.setItem("theme", document.body.classList.contains("light")?"light":"dark"); 
+    };
+  })();
+</script>
+</body>
+</html>
